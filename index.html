@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KeyForge — Password Generator</title>
+  <meta name="description" content="Generate strong, secure passwords instantly with KeyForge. Control length, character sets, and entropy." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="10" width="28" height="18" rx="4" fill="var(--accent)" opacity="0.15"/>
+          <rect x="2" y="10" width="28" height="18" rx="4" stroke="var(--accent)" stroke-width="1.5"/>
+          <path d="M10 10V7a6 6 0 1 1 12 0v3" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="16" cy="19" r="2.5" fill="var(--accent)"/>
+          <rect x="15" y="20.5" width="2" height="3" rx="1" fill="var(--accent)"/>
+        </svg>
+        <span class="logo-text">KeyForge</span>
+      </div>
+      <nav class="nav-links" aria-label="External links">
+        <a href="https://github.com/srichitransh69-bit" target="_blank" rel="noopener" class="nav-link" aria-label="GitHub Profile">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.2 22 16.447 22 12.021 22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="hero-eyebrow">Secure. Instant. Free.</p>
+        <h1 id="hero-title" class="hero-title">Generate Fortress-Grade<br/><span class="accent-text">Passwords</span></h1>
+        <p class="hero-sub">Cryptographically strong passwords generated entirely in your browser. Nothing is ever sent to a server.</p>
+      </section>
+
+      <div class="card main-card">
+
+        <!-- Password Output -->
+        <div class="output-area" role="region" aria-label="Generated password">
+          <div class="output-wrapper">
+            <code class="password-display" id="password-display" aria-live="polite" aria-atomic="true">Click generate to start</code>
+            <div class="output-actions">
+              <button class="icon-btn" id="copy-btn" aria-label="Copy password" title="Copy to clipboard" disabled>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button class="icon-btn" id="refresh-btn" aria-label="Generate new password" title="Generate new">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Strength Meter -->
+          <div class="strength-row" aria-label="Password strength">
+            <div class="strength-bars" id="strength-bars" aria-hidden="true">
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <span class="strength-label" id="strength-label">—</span>
+          </div>
+
+          <div class="entropy-row">
+            <span class="entropy-label">Entropy</span>
+            <span class="entropy-value" id="entropy-value">—</span>
+            <span class="entropy-sub" id="entropy-sub"></span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Controls -->
+        <div class="controls" role="form" aria-label="Password settings">
+
+          <!-- Length -->
+          <div class="control-group">
+            <div class="control-header">
+              <label class="control-label" for="length-slider">Length</label>
+              <output class="control-value" id="length-value" for="length-slider">16</output>
+            </div>
+            <input type="range" id="length-slider" class="range-slider" min="4" max="64" value="16" aria-valuemin="4" aria-valuemax="64" aria-valuenow="16" />
+            <div class="range-marks" aria-hidden="true">
+              <span>4</span><span>16</span><span>32</span><span>48</span><span>64</span>
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div class="control-group">
+            <div class="control-header">
+              <label class="control-label" for="quantity-slider">Quantity</label>
+              <output class="control-value" id="quantity-value" for="quantity-slider">1</output>
+            </div>
+            <input type="range" id="quantity-slider" class="range-slider" min="1" max="10" value="1" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1" />
+            <div class="range-marks" aria-hidden="true">
+              <span>1</span><span>5</span><span>10</span>
+            </div>
+          </div>
+
+          <!-- Character Sets -->
+          <fieldset class="control-group">
+            <legend class="control-label">Character sets</legend>
+            <div class="toggle-grid">
+              <label class="toggle-item">
+                <input type="checkbox" id="use-upper" checked />
+                <span class="toggle-box">
+                  <span class="toggle-name">Uppercase</span>
+                  <span class="toggle-example">A–Z</span>
+                </span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="use-lower" checked />
+                <span class="toggle-box">
+                  <span class="toggle-name">Lowercase</span>
+                  <span class="toggle-example">a–z</span>
+                </span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="use-numbers" checked />
+                <span class="toggle-box">
+                  <span class="toggle-name">Numbers</span>
+                  <span class="toggle-example">0–9</span>
+                </span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="use-symbols" checked />
+                <span class="toggle-box">
+                  <span class="toggle-name">Symbols</span>
+                  <span class="toggle-example">!@#$</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Options Row -->
+          <div class="options-row">
+            <label class="option-item">
+              <input type="checkbox" id="no-ambiguous" />
+              <span class="option-text">
+                <span>Exclude ambiguous</span>
+                <span class="option-hint">removes O, 0, l, 1, I</span>
+              </span>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="no-duplicate" />
+              <span class="option-text">
+                <span>No duplicate chars</span>
+                <span class="option-hint">each character once only</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- Custom Exclude -->
+          <div class="control-group">
+            <label class="control-label" for="exclude-input">Exclude characters</label>
+            <input type="text" id="exclude-input" class="text-input" placeholder="e.g. &quot;{}[]()&quot;" aria-label="Characters to exclude from password" autocomplete="off" spellcheck="false" />
+          </div>
+
+        </div>
+
+        <!-- Generate Button -->
+        <button class="generate-btn" id="generate-btn">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Generate Password
+        </button>
+
+        <!-- Copy Notification -->
+        <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Copied to clipboard!
+        </div>
+
+      </div>
+
+      <!-- Bulk Output (appears when quantity > 1) -->
+      <div class="bulk-section" id="bulk-section" hidden aria-live="polite">
+        <div class="bulk-header">
+          <h2 class="bulk-title">All Passwords</h2>
+          <button class="text-btn" id="copy-all-btn" aria-label="Copy all passwords">Copy all</button>
+        </div>
+        <ol class="bulk-list" id="bulk-list" aria-label="Generated passwords list"></ol>
+      </div>
+
+      <!-- Info Section -->
+      <section class="info-grid" aria-label="How passwords are generated">
+        <div class="info-card">
+          <div class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="info-title">Client-Side Only</h3>
+          <p class="info-text">Every password is generated using your browser's <code>crypto.getRandomValues()</code> API. Nothing leaves your device.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3 class="info-title">What is Entropy?</h3>
+          <p class="info-text">Entropy measures unpredictability in bits. 60+ bits is good. 80+ bits is very strong. 128+ is practically uncrackable.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 class="info-title">Best Practices</h3>
+          <p class="info-text">Use a unique password for every account. Store them in a trusted password manager like Bitwarden or 1Password.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Built by <a href="https://github.com/srichitransh69-bit" target="_blank" rel="noopener">Chitransh</a> · Open Source · No tracking, no ads, no BS</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
