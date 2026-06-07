@@ -1,0 +1,7 @@
+cd password-generator
+git init
+git add .
+git commit -m "Initial commit: KeyForge password generator"
+git branch -M main
+git remote add origin https://github.com/srichitransh69-bit/password-generator.git
+git push -u origin main
